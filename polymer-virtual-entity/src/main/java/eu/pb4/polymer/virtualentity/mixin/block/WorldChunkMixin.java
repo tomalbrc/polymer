@@ -4,7 +4,6 @@ import eu.pb4.polymer.virtualentity.api.BlockWithElementHolder;
 import eu.pb4.polymer.virtualentity.api.attachment.BlockBoundAttachment;
 import eu.pb4.polymer.virtualentity.api.attachment.HolderAttachment;
 import eu.pb4.polymer.virtualentity.impl.HolderAttachmentHolder;
-import eu.pb4.polymer.virtualentity.impl.VirtualEntityMod;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.block.BlockState;
 import net.minecraft.registry.Registry;
@@ -32,7 +31,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 @Mixin(WorldChunk.class)
 public abstract class WorldChunkMixin extends Chunk implements HolderAttachmentHolder {
@@ -108,8 +110,6 @@ public abstract class WorldChunkMixin extends Chunk implements HolderAttachmentH
 
     @Override
     public void polymerVE$addHolder(HolderAttachment holderAttachment) {
-        VirtualEntityMod.logAsyncAccess();
-
         this.polymerVE$holders.add(holderAttachment);
         if (holderAttachment instanceof BlockBoundAttachment blockBoundAttachment) {
             this.polymerVE$posHolders.put(blockBoundAttachment.getBlockPos(), blockBoundAttachment);
@@ -118,8 +118,6 @@ public abstract class WorldChunkMixin extends Chunk implements HolderAttachmentH
 
     @Override
     public void polymerVE$removeHolder(HolderAttachment holderAttachment) {
-        VirtualEntityMod.logAsyncAccess();
-
         this.polymerVE$holders.remove(holderAttachment);
         if (holderAttachment instanceof BlockBoundAttachment blockBoundAttachment) {
             this.polymerVE$posHolders.remove(blockBoundAttachment);
@@ -133,8 +131,6 @@ public abstract class WorldChunkMixin extends Chunk implements HolderAttachmentH
 
     @Override
     public void polymerVE$removePosHolder(BlockPos pos) {
-        VirtualEntityMod.logAsyncAccess();
-
         var x = this.polymerVE$posHolders.remove(pos);
         if (x != null) {
             this.polymerVE$holders.remove(x);

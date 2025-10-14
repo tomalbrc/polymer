@@ -3,18 +3,13 @@ package eu.pb4.polymer.virtualentity.mixin;
 import eu.pb4.polymer.virtualentity.api.attachment.HolderAttachment;
 import eu.pb4.polymer.virtualentity.impl.EntityExt;
 import eu.pb4.polymer.virtualentity.impl.HolderAttachmentHolder;
-import eu.pb4.polymer.virtualentity.impl.VirtualEntityMod;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -29,13 +24,11 @@ public abstract class EntityMixin implements HolderAttachmentHolder, EntityExt {
 
     @Override
     public void polymerVE$addHolder(HolderAttachment holderAttachment) {
-        VirtualEntityMod.logAsyncAccess();
         this.polymerVE$holders.add(holderAttachment);
     }
 
     @Override
     public void polymerVE$removeHolder(HolderAttachment holderAttachment) {
-        VirtualEntityMod.logAsyncAccess();
         this.polymerVE$holders.remove(holderAttachment);
     }
 
