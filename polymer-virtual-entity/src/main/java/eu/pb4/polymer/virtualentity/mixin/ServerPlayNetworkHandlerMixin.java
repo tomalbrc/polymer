@@ -4,6 +4,8 @@ package eu.pb4.polymer.virtualentity.mixin;
 import eu.pb4.polymer.virtualentity.api.ElementHolder;
 import eu.pb4.polymer.virtualentity.impl.HolderHolder;
 import eu.pb4.polymer.virtualentity.impl.PacketInterHandler;
+import eu.pb4.polymer.virtualentity.impl.VirtualEntityMod;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -18,21 +20,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandlerMixin implements HolderHolder {
     @Unique
-    private final Collection<ElementHolder> polymerVE$holders = new ArrayList<>();
+    private final Collection<ElementHolder> polymerVE$holders = Collections.synchronizedList(new ObjectArrayList<>());
     @Shadow
     public ServerPlayerEntity player;
 
     @Override
     public void polymer$addHolder(ElementHolder holderAttachment) {
+        VirtualEntityMod.logAsyncAccess();
         this.polymerVE$holders.add(holderAttachment);
     }
 
     @Override
     public void polymer$removeHolder(ElementHolder holderAttachment) {
+        VirtualEntityMod.logAsyncAccess();
         this.polymerVE$holders.remove(holderAttachment);
     }
 
